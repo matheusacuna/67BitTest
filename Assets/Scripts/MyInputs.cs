@@ -15,7 +15,9 @@ namespace MyInput
             instance = this;
 
             input = new InputMap();
+            input.Player.Enable();
         }
+        private void OnEnable() => input.Player.Enable();
 
         public static InputMap GetInput()
         {
