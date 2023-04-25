@@ -6,10 +6,12 @@ namespace Player
 { 
     public class PlayerController : MonoBehaviour
     {
+        public int CollectedObjectsCount { get; set; }
         private Rigidbody rig;
         public FixedJoystick joystick;
         private float moveH, moveV;
         public float speedMove = 5;
+
         // Start is called before the first frame update
         void Start()
         {
