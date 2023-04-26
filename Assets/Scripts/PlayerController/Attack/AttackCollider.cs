@@ -9,6 +9,7 @@ namespace Player
     {
         private PlayerController playerController;
         private Punch punchPlayer;
+        public float radiusCollider;
 
         private void Awake()
         {
@@ -16,14 +17,41 @@ namespace Player
             punchPlayer = GetComponentInParent<Punch>();
         }
 
-        private void OnTriggerEnter(Collider other)
+        private void Update()
         {
-            Idamageble obj = other.gameObject.GetComponent<Idamageble>();
+            Hit();
+        }
 
-            if (obj != null)
+        //private void OnTriggerEnter(Collider other)
+        //{
+        //    Idamageble obj = other.gameObject.GetComponent<Idamageble>();
+
+        //    if (obj != null)
+        //    {
+        //        obj.TakeDamage(playerController.transform, punchPlayer.punchDamage, punchPlayer.forceKnockback);
+        //    }
+        //}
+
+        public void Hit()
+        {
+            Collider[] hit = Physics.OverlapSphere(transform.position, radiusCollider);
+
+            foreach (var item in hit)
             {
-                obj.TakeDamage(playerController.transform, punchPlayer.punchDamage, punchPlayer.forceKnockback);
+                if (item.gameObject.CompareTag("Enemy"))
+                {
+                    Debug.Log("pegou");
+                    item.gameObject.GetComponent<EnemyController>().TakeDamage(playerController.transform, punchPlayer.punchDamage, punchPlayer.forceKnockback);
+                    //item.gameObject.GetComponent<FlashDamageEffect>().CallEffectFlashDamage();
+                    //GameObject obj = Instantiate(vfxBurning.gameObject, item.gameObject.transform.position, Quaternion.identity);
+                }
             }
         }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.DrawWireSphere(transform.position, radiusCollider);
+        }
+
     }
 }

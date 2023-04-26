@@ -6,55 +6,53 @@ using System;
 
 public class EnemyController : MonoBehaviour, Idamageble
 {
-    public Transform playerAttachmentPoint;
+    [Header("Stacking Enemy Settings")]
+    [SerializeField] StackingManager stackingManager;
+    //public int maxStackLimit;
+    [SerializeField]
+    private RagdollEnabler[] Ragdolls;
+    //public Transform playerAttachmentPoint;
     private Rigidbody rig;
-    public int offsetStacking;
-    public bool isAffected;
+    //public int offsetStacking;
+    //public bool isAffected;
+
 
     void Start()
     {
         rig = GetComponent<Rigidbody>();
     }
 
-    public void TakeDamage(Transform targetTransform, int damage, float knockBackForce)
+    public void TakeDamage(Transform targetTransform,  int damage, float knockBackForce)
     {
-        StartCoroutine(Stacking());
-        rig.KnockBack(transform, targetTransform, knockBackForce);
-    }
+        int currentStackCount = stackingManager.playerAttachmentPoint.childCount;
 
+        if (currentStackCount < stackingManager.maxStackLimit)
+        {
+            StartCoroutine(Stacking());
+        }
+
+        ApplyKnockback(targetTransform, knockBackForce); 
+
+    }
+    public void ApplyKnockback(Transform targetTransform, float knockBackForce)
+    {
+        foreach (RagdollEnabler ragdoll in Ragdolls)
+        {
+            ragdoll.EnableRagdoll();
+
+        }
+        foreach (RagdollEnabler ragdoll in Ragdolls)
+        {
+            foreach (Rigidbody rigidbody in ragdoll.rigidBodies)
+            {
+                rigidbody.KnockBack(transform, targetTransform, knockBackForce);
+            }
+        }
+    }
     public IEnumerator Stacking()
     {
         yield return new WaitForSeconds(1.5f);
-
-        isAffected = true;
-
-        if(isAffected)
-        {
-            gameObject.GetComponent<Rigidbody>().isKinematic = true;
-
-            int indexStack = playerAttachmentPoint.transform.childCount - 1;
-
-            Vector3 position = Vector3.zero;
-            Quaternion rotation = Quaternion.Euler(-90, 90, 0);
-
-            if (indexStack >= 0)
-            {
-                position = playerAttachmentPoint.GetChild(indexStack).transform.localPosition;
-            }
-
-            transform.SetParent(playerAttachmentPoint);
-
-            if (indexStack >= 0)
-            {
-                position.y += offsetStacking;
-                transform.localPosition = position;
-                transform.localRotation = rotation;
-            }
-            else
-            {
-                transform.localPosition = Vector3.zero;
-                transform.localRotation = rotation;
-            }
-        }
+        stackingManager.StackingEnemies(Ragdolls, transform);
+        
     }
 }

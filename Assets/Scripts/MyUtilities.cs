@@ -10,6 +10,7 @@ namespace MyUtilities
         {
             Vector3 dir = (transform1.position - transform2.position).normalized;
             rig.AddForce(dir * knockBackForce, ForceMode.Impulse);
+
         }
     }
 }
