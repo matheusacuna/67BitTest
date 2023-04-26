@@ -8,19 +8,7 @@ public class EnemyController : MonoBehaviour, Idamageble
 {
     [Header("Stacking Enemy Settings")]
     [SerializeField] StackingManager stackingManager;
-    //public int maxStackLimit;
-    [SerializeField]
-    private RagdollEnabler[] Ragdolls;
-    //public Transform playerAttachmentPoint;
-    private Rigidbody rig;
-    //public int offsetStacking;
-    //public bool isAffected;
-
-
-    void Start()
-    {
-        rig = GetComponent<Rigidbody>();
-    }
+    [SerializeField] private RagdollEnabler[] Ragdolls;
 
     public void TakeDamage(Transform targetTransform,  int damage, float knockBackForce)
     {

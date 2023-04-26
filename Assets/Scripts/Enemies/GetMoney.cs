@@ -7,6 +7,7 @@ public class GetMoney : MonoBehaviour
 {
     public float radiusCollider;
     [SerializeField] private ShopManager moneyManager;
+    
 
     void Update()
     {
@@ -21,9 +22,9 @@ public class GetMoney : MonoBehaviour
         {
             if (item.gameObject.CompareTag("Pool"))
             {
-                Debug.Log("pegou");
                 moneyManager.IncrementMoney(10f);
-                Destroy(gameObject);
+                Feedback();
+                Destroy(gameObject);               
             }
         }
     }
@@ -31,5 +32,10 @@ public class GetMoney : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(transform.position, radiusCollider);
+    }
+
+    public void Feedback()
+    {
+        moneyManager.feedbackMoney.GetComponent<Animator>().Play("feedbackMoney", -1, 0.0f);
     }
 }

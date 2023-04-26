@@ -17,41 +17,14 @@ namespace Player
             punchPlayer = GetComponentInParent<Punch>();
         }
 
-        private void Update()
+        private void OnTriggerEnter(Collider other)
         {
-            Hit();
-        }
+            Idamageble obj = other.gameObject.GetComponent<Idamageble>();
 
-        //private void OnTriggerEnter(Collider other)
-        //{
-        //    Idamageble obj = other.gameObject.GetComponent<Idamageble>();
-
-        //    if (obj != null)
-        //    {
-        //        obj.TakeDamage(playerController.transform, punchPlayer.punchDamage, punchPlayer.forceKnockback);
-        //    }
-        //}
-
-        public void Hit()
-        {
-            Collider[] hit = Physics.OverlapSphere(transform.position, radiusCollider);
-
-            foreach (var item in hit)
+            if (obj != null)
             {
-                if (item.gameObject.CompareTag("Enemy"))
-                {
-                    Debug.Log("pegou");
-                    item.gameObject.GetComponent<EnemyController>().TakeDamage(playerController.transform, punchPlayer.punchDamage, punchPlayer.forceKnockback);
-                    //item.gameObject.GetComponent<FlashDamageEffect>().CallEffectFlashDamage();
-                    //GameObject obj = Instantiate(vfxBurning.gameObject, item.gameObject.transform.position, Quaternion.identity);
-                }
+                obj.TakeDamage(playerController.transform, punchPlayer.punchDamage, punchPlayer.forceKnockback);
             }
         }
-
-        private void OnDrawGizmos()
-        {
-            Gizmos.DrawWireSphere(transform.position, radiusCollider);
-        }
-
     }
 }
