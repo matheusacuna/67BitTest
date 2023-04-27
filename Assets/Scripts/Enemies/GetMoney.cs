@@ -7,6 +7,7 @@ public class GetMoney : MonoBehaviour
 {
     public float radiusCollider;
     [SerializeField] private ShopManager moneyManager;
+    [SerializeField] private StackingManager stackingManager;
     
 
     void Update()
@@ -24,6 +25,7 @@ public class GetMoney : MonoBehaviour
             {
                 moneyManager.IncrementMoney(10f);
                 Feedback();
+                stackingManager.currentStackAmount = 0;
                 Destroy(gameObject);               
             }
         }

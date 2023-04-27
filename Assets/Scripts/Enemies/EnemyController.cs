@@ -8,7 +8,8 @@ public class EnemyController : MonoBehaviour, Idamageble
 {
     [Header("Stacking Enemy Settings")]
     [SerializeField] StackingManager stackingManager;
-    [SerializeField] private RagdollEnabler[] Ragdolls;
+    [SerializeField] public RagdollEnabler[] Ragdolls;
+    public bool isAffected;
 
     public void TakeDamage(Transform targetTransform,  int damage, float knockBackForce)
     {

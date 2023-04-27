@@ -17,7 +17,7 @@ public class ShopManager : MonoBehaviour
     [Header("References")]
     [SerializeField] private StackingManager stackingManager;
     [SerializeField] private SkinnedMeshRenderer skinnedMeshRenderer;
-    [SerializeField] private Material materialReference;
+    [SerializeField] private Material[] materialReference;
 
     private void Update()
     {
@@ -38,7 +38,7 @@ public class ShopManager : MonoBehaviour
         if(moneyAmount >= moneyAmountForNewColor)
         {
             DecrementMoney(moneyAmountForNewColor);
-            skinnedMeshRenderer.material = materialReference;
+            skinnedMeshRenderer.material = materialReference[Random.Range(0, materialReference.Length)];
         }
     }
 

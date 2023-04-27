@@ -6,19 +6,29 @@ namespace Player
 { 
     public class PlayerController : MonoBehaviour
     {
-        public int CollectedObjectsCount { get; set; }
-        private Rigidbody rig;
+        [Header("Joystick Asset Reference")]
         public FixedJoystick joystick;
+
+        [Header("Move Settings")]
+        private Rigidbody rig;
         private float moveH, moveV;
         public float speedMove = 5;
 
-        // Start is called before the first frame update
+        private Animator animPlayer;
+
+        public float radiusCollider;
+
         void Start()
         {
             rig = GetComponent<Rigidbody>();
+            animPlayer = GetComponent<Animator>();
         }
 
-        // Update is called once per frame
+        private void Update()
+        {
+            SetAnimations();
+        }
+
         void FixedUpdate()
         {
             Move();
@@ -36,6 +46,12 @@ namespace Player
             {
                 transform.LookAt(transform.position + dir);
             }
+        }
+
+        public void SetAnimations()
+        {
+            float velocityMagnitude = new Vector3(rig.velocity.x, 0, rig.velocity.z).magnitude;
+            animPlayer.SetFloat("velocity", velocityMagnitude);
         }
     }
 }
